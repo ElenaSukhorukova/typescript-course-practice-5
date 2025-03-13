@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-type CartItem = {
+export type CartItem = {
   id: string;
   title: string;
   price: number;
@@ -13,13 +13,13 @@ type CartState = {
 
 const initialState: CartState = {
   items: []
-}
+};
 
 export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCarr(state, action: PayloadAction<{
+    addToCart(state, action: PayloadAction<{
       id: string;
       title: string;
       price: number;
@@ -39,11 +39,16 @@ export const cartSlice = createSlice({
         item => item.id === action.payload
       );
 
-      if (itemIndex >= 0) {
-        state.items.slice(itemIndex, 1)
+      if (state.items[itemIndex].quantity === 1) {
+        state.items.splice(itemIndex, 1)
       } else {
         state.items[itemIndex].quantity--;
       }
     }
   }
 });
+
+export const {
+  addToCart,
+  removeFromCart
+} = cartSlice.actions;
